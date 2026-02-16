@@ -29,4 +29,27 @@ export const createProduct = async (req, res) => {
     res.status(201).json(product);
 };
 
+export const updateProduct = async (req, res) => {
+    const { productId } = req.params;
 
+    const product = await Product.findByIdAndUpdate(
+        productId , // Шукаємо по id
+        req.body,
+        { new: true }, // повертаємо оновлений документ
+    );
+
+    if (!product) {
+        throw createHttpError(404, "Product not found")
+    }
+    res.status(200).json(product);
+};
+
+export const deleteProduct = async (req,res) => {
+    const { productId } = req.params;
+    const product = await Product.findByIdAndDelete(productId);
+
+    if (!product ) {
+        throw createHttpError(404, "Note not found");
+    }
+    res.status(200).json(product);
+}
